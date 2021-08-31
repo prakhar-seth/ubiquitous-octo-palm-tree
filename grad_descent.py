@@ -8,7 +8,6 @@ def step_gradient(points,learning_rate,m,c):
         y=points[i,1]
         m_slope+= (-2/n)*(y-m*x-c)*x
         c_slope+= (-2/n)*(y-m*x-c)
-        print(i)
     new_m=m-learning_rate*m_slope
     new_c=c-learning_rate*c_slope
     return new_m,new_c
@@ -29,9 +28,9 @@ def cost(points,m,c):
         y=points[i,0]
         total_cost+=(1/n)*((y-m*x-c)**2)
     return total_cost
-def run():
-    data=np.loadtxt("data.csv",delimiter=",")
-    learning_rate=0.0001
-    num_iteration=10
-    m,c=gd(data,learning_rate,num_iteration)
-    print (m,c)
+
+data=np.loadtxt("data.csv",delimiter=",")
+learning_rate=0.0001
+num_iteration=100
+m,c=gd(data,learning_rate,num_iteration)
+print (m,c)
