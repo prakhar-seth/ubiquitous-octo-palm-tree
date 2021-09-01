@@ -20,7 +20,7 @@ def gd(points,learning_rate,num_iteration):
         print(i,"cost:",cost(points,m,c))
     return m,c
 
-def cost(points,m,c):
+def cost(points,m,c):  
     total_cost=0
     n=len(points)
     for i in range(0,n):
