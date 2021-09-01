@@ -1,39 +1,41 @@
 import numpy as np
 from sklearn import datasets
-import pandas as pd
 
-
-def step_grad(data,y,m,learning_rate):
-    n=data.shape[1]
-    m_slope=np.zeros(n)
-    m=data.shape[0]
-    for i in range(n):
-        for j in range(m):
-            x=data.loc[j,:]
-            m_slope[i]+=(-2/n)*((y-np.dot(x,m))*x[i])
-    new_m=m-learning_rate*m_slope
+from sklearn import preprocessing
+def step_grad(X, Y, m, learning_rate):
+    m_slope=np.zeros(len(X[0]))
+    for i in range(len(X)):
+        x=X[i]
+        y=Y[i]
+        for j in range(len(x)):
+            m_slope[j]+=(-2/len(X))*(y-sum(m*x))*x[j]
+    new_m=m-(learning_rate*m_slope)
     return new_m
 
-def gd(points,y,learning_rate,num_iteration):
-    n=points.shape[1]
-    m=np.zeros(n)
-    for i in range(num_iteration):
-        m=step_grad(points,y,learning_rate,m)
-        print("cost of ",i,"iterartion is", cost(points,y,m))
-    return m         
-def cost(data,y,m):  
-    total_cost=0
-    n=data.shape[1]
-    for i in range(0,n):
-        x=data.loc[i,:].reshape(-1,1)
-        total_cost+=(1/n)*(y-np.dot(m,x)**2)
+def cost(m, x, y):
+    cost=0
+    for i in range(len(x)):
+        cost+=(1/len(x))*((y[i]-sum(m*x[i]))**2)
+    print(cost)
 
-    return total_cost
+def gd(x, y, learning_rate, iterations):
+    m=np.zeros(len(x[0]))
+    for i in range(iterations):
+        m=step_grad(x, y, m, learning_rate)
+        print("itr= ", i, "cost=", end=' ')
+        cost(m, x, y)
+    return m
+
+def gradient_descent(x, y):
+    iterations=300
+    learning_rate=0.1
+    x=np.append(x, np.ones(len(x)).reshape(-1, 1), axis=1)
+    m=gd(x, y, learning_rate, iterations)
+    return m
 boston =datasets.load_boston()
 x=boston.data
 y=boston.target
-df=pd.DataFrame(x)
-df.columns=boston.feature_names
-df['c']=1
-m=gd(df,y,0.001,10)
-print(m)
+scaler=preprocessing.StandardScaler()
+scaler.fit(x)
+x=scaler.transform(x)
+m=gradient_descent(x, y)
