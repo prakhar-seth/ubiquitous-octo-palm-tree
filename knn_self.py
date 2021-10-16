@@ -39,7 +39,7 @@ correct =0
 total=0
 for group in test_set:
     for data in test_set[group]:
-        vote=k_near_neigh(train_set,data,5)
+        vote=k_near_neigh(train_set,data,25)
         if group ==vote:
             correct+=1
         total+=1
