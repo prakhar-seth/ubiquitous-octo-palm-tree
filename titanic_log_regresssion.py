@@ -10,7 +10,7 @@ df.drop('Sex',axis=1,inplace=True)
 df.drop('Ticket',axis=1,inplace=True)
 df['embarked']=df.Embarked.map({"S":0, "C":0.5, "Q":1})
 df.drop('Embarked', inplace=True, axis=1)
-df.dropna(inplace=True)
+df.fillna(0,inplace=True)
 y=df['Survived']
 df.drop('Survived',axis=1,inplace=True)
 
